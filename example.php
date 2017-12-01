@@ -10,16 +10,16 @@
  * @link     https://github.com/AstralInternet/query_cpanel_eximstats_sqlite
  */
 
-# Full path to the script
+# Full path to the script.
 $script = "/root/cp_eximstats_query.pl";  
 
 # Build a query to list all tables within the Eximstats SQLite database.
 $query = "SELECT name FROM sqlite_master WHERE type='table'";
 
-# Build the commande for the perl Script.
+# Build the command for the Perl script.
 $command = "perl " . $script . ' "' . $query . '"';
 
-# Call the perl script to get the resut in a json format
+# Call the Perl script to get the result in a json format.
 $json_records = json_encode(system($command));
 
 echo "\n";

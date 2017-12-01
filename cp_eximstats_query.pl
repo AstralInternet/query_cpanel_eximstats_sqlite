@@ -1,7 +1,7 @@
 #!/usr/local/cpanel/3rdparty/bin/perl
 # 
 # Script used to query the cPanel EximStats SQLite database.
-# Important : This script is depandant of the cPanel Perl Path.
+# Important: This script is dependent of the cPanel Perl Path.
 # 
 # @author   Astral Internet inc <info@astralinternet.com>
 # @link     https://github.com/AstralInternet/query_cpanel_eximstats_sqlite
@@ -11,7 +11,7 @@ use JSON;
 use CGI;
 use DBD::SQLite();  # cPanel Perl package to connect to SQLite (Must have a valid cPanel license to use).
 
-# Connect to the EximStats SQLite database using the DBD::SQLite Package
+# Connect to the EximStats SQLite database using the DBD::SQLite Package.
 my $dbh = DBI->connect('dbi:SQLite:/var/cpanel/eximstats_db.sqlite3', undef, undef,
         {
             sqlite_open_flags                => "DBD::SQLite::OPEN_READONLY",
@@ -26,32 +26,32 @@ if ( not $dbh or $DBI::errstr ) {
     die qq{$err\n};
 }
 
-# Grab the query from the function argument
+# Grab the query from the function argument.
 my ($query) = @ARGV;
 
-# Prepare the SQL query
+# Prepare the SQL query.
 my $sth = $dbh->prepare( $query );
 
-# Get the recordset by executing the query
+# Get the recordset by executing the query.
 my $rv = $sth->execute() or die $DBI::errstr;
 
-# If there not record, print the error message
+# If there is not record, print the error message.
 if($rv < 0) {
    print $DBI::errstr;
 }
 
-# Transform the recordset into a JSON format
+# Transform the recordset into a JSON format.
 my @output;
 while ( my $row = $sth->fetchrow_hashref ){
     push @output, $row;
 }
 
-# Add a header to the output for better PHP interpretation
+# Add a header to the output for better PHP interpretation.
 my $cgi = CGI->new;
 print $cgi->header( 'application/json' );
 
-# Output the JSON string
+# Output the JSON string.
 print to_json( { myData => \@output } );
 
-# Close DB Connection
+# Close DB Connection.
 $dbh->disconnect();
